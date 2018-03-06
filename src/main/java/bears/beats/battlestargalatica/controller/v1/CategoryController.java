@@ -3,6 +3,7 @@ package bears.beats.battlestargalatica.controller.v1;
 import bears.beats.battlestargalatica.api.v1.dto.CategoryDTO;
 import bears.beats.battlestargalatica.api.v1.dto.CategoryListDTO;
 import bears.beats.battlestargalatica.service.CategoryService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+@Slf4j
 @Controller
 @RequestMapping("/api/v1/categories/")
 public class CategoryController {
@@ -22,6 +24,7 @@ public class CategoryController {
 
     @GetMapping
     public ResponseEntity<CategoryListDTO> getAllCategories() {
+        log.debug("Getting All categories");
         return new ResponseEntity<>(
                 new CategoryListDTO(categoryService.getAllCategories()),
                 HttpStatus.OK);
@@ -29,6 +32,7 @@ public class CategoryController {
 
     @GetMapping("{name}")
     public ResponseEntity<CategoryDTO> getCategoryByName(@PathVariable String name) {
+        log.debug("Getting category with name " + name);
         return new ResponseEntity<>(
                 categoryService.getCategoryByName(name), HttpStatus.OK
         );

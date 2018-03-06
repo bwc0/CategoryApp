@@ -1,4 +1,4 @@
-package bears.beats.battlestargalatica.controller;
+package bears.beats.battlestargalatica.controller.v1;
 
 import bears.beats.battlestargalatica.api.v1.dto.CategoryDTO;
 import bears.beats.battlestargalatica.controller.v1.CategoryController;
