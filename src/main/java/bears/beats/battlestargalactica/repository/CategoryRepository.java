@@ -1,0 +1,10 @@
+package bears.beats.battlestargalactica.repository;
+
+import bears.beats.battlestargalactica.domain.Category;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface CategoryRepository extends JpaRepository<Category, Long>{
+
+    Category findByName(String name);
+
+}
