@@ -5,14 +5,10 @@ import bears.beats.battlestargalactica.api.v1.dto.CategoryListDTO;
 import bears.beats.battlestargalactica.service.CategoryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
-@Controller
+@RestController
 @RequestMapping(CategoryController.BASEURL)
 public class CategoryController {
 
@@ -24,18 +20,16 @@ public class CategoryController {
     }
 
     @GetMapping
-    public ResponseEntity<CategoryListDTO> getAllCategories() {
-        log.debug("Getting All categories");
-        return new ResponseEntity<>(
-                new CategoryListDTO(categoryService.getAllCategories()),
-                HttpStatus.OK);
+    @ResponseStatus(HttpStatus.OK)
+    public CategoryListDTO getAllCategories() {
+        log.debug("Getting all categories");
+        return new CategoryListDTO(categoryService.getAllCategories());
     }
 
     @GetMapping("/{name}")
-    public ResponseEntity<CategoryDTO> getCategoryByName(@PathVariable String name) {
+    @ResponseStatus(HttpStatus.OK)
+    public CategoryDTO getCategoryByName(@PathVariable String name) {
         log.debug("Getting category with name " + name);
-        return new ResponseEntity<>(
-                categoryService.getCategoryByName(name), HttpStatus.OK
-        );
+        return categoryService.getCategoryByName(name);
     }
 }
