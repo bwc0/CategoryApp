@@ -27,9 +27,9 @@ public class CustomerController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable String id) {
+    public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable Long id) {
         return new ResponseEntity<>(
-                customerService.getCustomersById(Long.valueOf(id)),
+                customerService.getCustomersById(id),
                 HttpStatus.OK
         );
     }
@@ -42,16 +42,22 @@ public class CustomerController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CustomerDTO> updateCustomer(@PathVariable String id, @RequestBody CustomerDTO customerDTO) {
+    public ResponseEntity<CustomerDTO> updateCustomer(@PathVariable Long id, @RequestBody CustomerDTO customerDTO) {
         return new ResponseEntity<>(
-                customerService.saveCustomer(Long.valueOf(id), customerDTO), HttpStatus.OK
+                customerService.saveCustomer(id, customerDTO), HttpStatus.OK
         );
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<CustomerDTO> patchCustomer(@PathVariable String id, @RequestBody CustomerDTO customerDTO) {
+    public ResponseEntity<CustomerDTO> patchCustomer(@PathVariable Long id, @RequestBody CustomerDTO customerDTO) {
         return new ResponseEntity<>(
-                customerService.patchCustomer(Long.valueOf(id), customerDTO), HttpStatus.OK
+                customerService.patchCustomer(id, customerDTO), HttpStatus.OK
         );
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteCustomer(@PathVariable Long id) {
+        customerService.deleteCustomerById(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
