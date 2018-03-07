@@ -2,6 +2,7 @@ package bears.beats.battlestargalactica.service;
 
 import bears.beats.battlestargalactica.api.v1.dto.CustomerDTO;
 import bears.beats.battlestargalactica.api.v1.mapper.CustomerMapper;
+import bears.beats.battlestargalactica.controller.v1.CustomerController;
 import bears.beats.battlestargalactica.domain.Customer;
 import bears.beats.battlestargalactica.repository.CustomerRepository;
 import org.junit.Before;
@@ -84,7 +85,7 @@ public class CustomerServiceImplementationTest {
         CustomerDTO savedCustomerDTO = customerService.createNewCustomer(customerDTO);
 
         assertEquals(savedCustomer.getFirstName(), savedCustomerDTO.getFirstName());
-        assertEquals("/api/v1/customer/1", savedCustomerDTO.getCustomerUrl());
+        assertEquals(CustomerController.BASEURL + "/1", savedCustomerDTO.getCustomerUrl());
     }
 
     @Test
@@ -104,7 +105,7 @@ public class CustomerServiceImplementationTest {
         CustomerDTO updatedDTO = customerService.saveCustomer(1L, customerDTO);
 
         assertEquals(savedCustomer.getFirstName(), updatedDTO.getFirstName());
-        assertEquals("/api/v1/customer/1", updatedDTO.getCustomerUrl());
+        assertEquals(CustomerController.BASEURL + "/1", updatedDTO.getCustomerUrl());
 
     }
 

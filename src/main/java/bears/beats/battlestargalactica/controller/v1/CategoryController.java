@@ -13,9 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Slf4j
 @Controller
-@RequestMapping("/api/v1/categories")
+@RequestMapping(CategoryController.BASEURL)
 public class CategoryController {
 
+    public static final String BASEURL = "/api/v1/categories";
     private CategoryService categoryService;
 
     public CategoryController(CategoryService categoryService) {

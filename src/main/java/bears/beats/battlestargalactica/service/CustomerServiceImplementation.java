@@ -2,6 +2,7 @@ package bears.beats.battlestargalactica.service;
 
 import bears.beats.battlestargalactica.api.v1.dto.CustomerDTO;
 import bears.beats.battlestargalactica.api.v1.mapper.CustomerMapper;
+import bears.beats.battlestargalactica.controller.v1.CustomerController;
 import bears.beats.battlestargalactica.domain.Customer;
 import bears.beats.battlestargalactica.repository.CustomerRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +15,6 @@ import java.util.stream.Collectors;
 @Service
 public class CustomerServiceImplementation implements CustomerService{
 
-    public static final String API_V1_CUSTOMER = "/api/v1/customer/";
     private final CustomerMapper customerMapper;
     private final CustomerRepository customerRepository;
 
@@ -30,7 +30,7 @@ public class CustomerServiceImplementation implements CustomerService{
                 .stream()
                 .map(customer -> {
                     CustomerDTO customerDTO = customerMapper.customerToCustomerDTO(customer);
-                    customerDTO.setCustomerUrl(API_V1_CUSTOMER + customer.getId());
+                    customerDTO.setCustomerUrl(getCustomerUrl(customer.getId()));
                     return customerDTO;
                 })
                 .collect(Collectors.toList());
@@ -71,10 +71,15 @@ public class CustomerServiceImplementation implements CustomerService{
                     CustomerDTO returnDTO = customerMapper
                             .customerToCustomerDTO(customerRepository.save(customer));
 
-                    returnDTO.setCustomerUrl(API_V1_CUSTOMER + id);
+                    returnDTO.setCustomerUrl(getCustomerUrl(id));
 
                     return returnDTO;
                 }).orElseThrow(RuntimeException::new);
+    }
+
+    @Override
+    public void deleteCustomerById(Long id) {
+        customerRepository.deleteById(id);
     }
 
     private CustomerDTO saveAndReturnDTO(Customer customer) {
@@ -84,13 +89,13 @@ public class CustomerServiceImplementation implements CustomerService{
         CustomerDTO returnDTO = customerMapper
                 .customerToCustomerDTO(savedCustomer);
 
-        returnDTO.setCustomerUrl(API_V1_CUSTOMER + savedCustomer.getId());
+        returnDTO.setCustomerUrl(getCustomerUrl(savedCustomer.getId()));
 
         return returnDTO;
     }
 
-    @Override
-    public void deleteCustomerById(Long id) {
-        customerRepository.deleteById(id);
+    private String getCustomerUrl(Long id) {
+        return CustomerController.BASEURL + "/" + id;
     }
+
 }
