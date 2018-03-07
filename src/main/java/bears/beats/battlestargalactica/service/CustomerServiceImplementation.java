@@ -2,6 +2,7 @@ package bears.beats.battlestargalactica.service;
 
 import bears.beats.battlestargalactica.api.v1.dto.CustomerDTO;
 import bears.beats.battlestargalactica.api.v1.mapper.CustomerMapper;
+import bears.beats.battlestargalactica.domain.Customer;
 import bears.beats.battlestargalactica.repository.CustomerRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -39,5 +40,19 @@ public class CustomerServiceImplementation implements CustomerService{
         return customerRepository.findById(id)
                 .map(customerMapper::customerToCustomerDTO)
                 .orElseThrow(RuntimeException::new);
+    }
+
+    @Override
+    public CustomerDTO createNewCustomer(CustomerDTO customerDTO) {
+
+        Customer savedCustomer = customerRepository
+                .save(customerMapper.customerDTOToCustomer(customerDTO));
+
+        CustomerDTO returnDTO = customerMapper
+                .customerToCustomerDTO(savedCustomer);
+
+        returnDTO.setCustomerUrl("/api/v1/customer/" + savedCustomer.getId());
+
+        return returnDTO;
     }
 }
