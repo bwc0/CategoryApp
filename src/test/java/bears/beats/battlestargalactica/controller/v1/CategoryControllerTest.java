@@ -1,8 +1,10 @@
 package bears.beats.battlestargalactica.controller.v1;
 
 import bears.beats.battlestargalactica.api.v1.dto.CategoryDTO;
+import bears.beats.battlestargalactica.controller.RestResponseEntityExceptionHandler;
 import bears.beats.battlestargalactica.controller.v1.CategoryController;
 import bears.beats.battlestargalactica.service.CategoryService;
+import bears.beats.battlestargalactica.service.ResourceNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -38,8 +40,9 @@ public class CategoryControllerTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-
-        mockMvc = MockMvcBuilders.standaloneSetup(categoryController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(categoryController)
+                .setControllerAdvice(new RestResponseEntityExceptionHandler())
+                .build();
     }
 
     @Test
@@ -73,5 +76,15 @@ public class CategoryControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name", equalTo(NAME)));
+    }
+
+    @Test
+    public void getCategoryByNameNotFoundTest() throws Exception {
+
+        when(categoryService.getCategoryByName(anyString())).thenThrow(ResourceNotFoundException.class);
+
+        mockMvc.perform(get(CategoryController.BASEURL + "/BOOM")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
     }
 }

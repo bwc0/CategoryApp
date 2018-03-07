@@ -1,7 +1,9 @@
 package bears.beats.battlestargalactica.controller.v1;
 
 import bears.beats.battlestargalactica.api.v1.dto.CustomerDTO;
+import bears.beats.battlestargalactica.controller.RestResponseEntityExceptionHandler;
 import bears.beats.battlestargalactica.service.CustomerService;
+import bears.beats.battlestargalactica.service.ResourceNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -14,7 +16,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.Arrays;
 import java.util.List;
 
-import static bears.beats.battlestargalactica.service.AbstractRestControllerTest.asJsonString;
+import static bears.beats.battlestargalactica.controller.v1.AbstractRestControllerTest.asJsonString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
@@ -54,7 +56,9 @@ public class CustomerControllerTest {
         returnDTO.setLastName(customerDTO.getLastName());
         returnDTO.setCustomerUrl(CustomerController.BASEURL + "/1");
 
-        mockMvc = MockMvcBuilders.standaloneSetup(customerController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(customerController)
+                .setControllerAdvice(new RestResponseEntityExceptionHandler())
+                .build();
     }
 
     @Test
@@ -135,5 +139,14 @@ public class CustomerControllerTest {
                 .andExpect(status().isOk());
 
         verify(customerService).deleteCustomerById(anyLong());
+    }
+
+    @Test
+    public void getCustomerByIdNotFoundExceptionTest() throws Exception {
+        when(customerService.getCustomersById(anyLong())).thenThrow(ResourceNotFoundException.class);
+
+        mockMvc.perform(get(CustomerController.BASEURL + "/234")
+            .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
     }
 }

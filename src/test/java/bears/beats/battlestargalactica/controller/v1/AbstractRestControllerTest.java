@@ -1,4 +1,4 @@
-package bears.beats.battlestargalactica.service;
+package bears.beats.battlestargalactica.controller.v1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
