@@ -73,6 +73,7 @@ public class CustomerControllerTest {
         when(customerService.getAllCustomers()).thenReturn(customerDTOS);
 
         mockMvc.perform(get(CustomerController.BASEURL)
+                .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.customers", hasSize(2)));
@@ -84,6 +85,7 @@ public class CustomerControllerTest {
         when(customerService.getCustomersById(anyLong())).thenReturn(customerDTO);
 
         mockMvc.perform(get(CustomerController.BASEURL + "/1")
+            .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstName", equalTo(FIRSTNAME)));
@@ -95,11 +97,12 @@ public class CustomerControllerTest {
         when(customerService.createNewCustomer(customerDTO)).thenReturn(returnDTO);
 
         mockMvc.perform(post(CustomerController.BASEURL)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(customerDTO)))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.firstName", equalTo(FIRSTNAME)))
-                .andExpect(jsonPath("$.customer_url", equalTo(CustomerController.BASEURL + "/1")));
+            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(asJsonString(customerDTO)))
+              .andExpect(status().isCreated())
+              .andExpect(jsonPath("$.firstName", equalTo(FIRSTNAME)))
+              .andExpect(jsonPath("$.customer_url", equalTo(CustomerController.BASEURL + "/1")));
     }
 
     @Test
@@ -108,9 +111,10 @@ public class CustomerControllerTest {
         when(customerService.saveCustomer(anyLong(), any(CustomerDTO.class))).thenReturn(returnDTO);
 
         mockMvc.perform(put(CustomerController.BASEURL + "/1")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(customerDTO)))
-                .andExpect(status().isOk())
+            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(asJsonString(customerDTO)))
+            .andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstName", equalTo(FIRSTNAME)))
                 .andExpect(jsonPath("$.lastName", equalTo(LASTNAME)))
                 .andExpect(jsonPath("$.customer_url", equalTo(CustomerController.BASEURL + "/1")));
@@ -123,9 +127,10 @@ public class CustomerControllerTest {
         when(customerService.patchCustomer(anyLong(), any(CustomerDTO.class))).thenReturn(returnDTO);
 
         mockMvc.perform(patch(CustomerController.BASEURL + "/1")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(customerDTO)))
-                .andExpect(status().isOk())
+            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(asJsonString(customerDTO)))
+            .andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstName", equalTo(FIRSTNAME)))
                 .andExpect(jsonPath("$.lastName", equalTo("Rogan")))
                 .andExpect(jsonPath("$.customer_url", equalTo(CustomerController.BASEURL + "/1")));
