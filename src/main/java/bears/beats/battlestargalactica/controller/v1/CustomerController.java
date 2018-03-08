@@ -34,7 +34,6 @@ public class CustomerController {
     @ResponseStatus(HttpStatus.CREATED)
     public CustomerDTO createNewCustomer(@RequestBody CustomerDTO customerDTO) {
         return customerService.createNewCustomer(customerDTO);
-
     }
 
     @PutMapping("/{id}")

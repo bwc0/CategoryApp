@@ -6,6 +6,7 @@ import bears.beats.battlestargalactica.bootstrapClasses.Bootstrap;
 import bears.beats.battlestargalactica.domain.Customer;
 import bears.beats.battlestargalactica.repository.CategoryRepository;
 import bears.beats.battlestargalactica.repository.CustomerRepository;
+import bears.beats.battlestargalactica.repository.VendorRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,6 +34,9 @@ public class CustomerServiceIT {
     @Autowired
     CategoryRepository categoryRepository;
 
+    @Autowired
+    VendorRepository vendorRepository;
+
     CustomerService customerService;
 
     @Before
@@ -40,7 +44,7 @@ public class CustomerServiceIT {
         System.out.println("Loading customer data");
         System.out.println(customerRepository.findAll().size());
 
-        Bootstrap bootstrap = new Bootstrap(categoryRepository, customerRepository);
+        Bootstrap bootstrap = new Bootstrap(categoryRepository, customerRepository, vendorRepository);
         bootstrap.run();
 
         customerService = new CustomerServiceImplementation(CustomerMapper.INSTANCE, customerRepository);

@@ -2,8 +2,10 @@ package bears.beats.battlestargalactica.bootstrapClasses;
 
 import bears.beats.battlestargalactica.domain.Category;
 import bears.beats.battlestargalactica.domain.Customer;
+import bears.beats.battlestargalactica.domain.Vendor;
 import bears.beats.battlestargalactica.repository.CategoryRepository;
 import bears.beats.battlestargalactica.repository.CustomerRepository;
+import bears.beats.battlestargalactica.repository.VendorRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -16,19 +18,26 @@ public class Bootstrap implements CommandLineRunner{
 
     private CategoryRepository categoryRepository;
     private CustomerRepository customerRepository;
+    private VendorRepository vendorRepository;
 
-    public Bootstrap(CategoryRepository categoryRepository, CustomerRepository customerRepository) {
+    public Bootstrap(CategoryRepository categoryRepository,
+                     CustomerRepository customerRepository,
+                     VendorRepository vendorRepository) {
         this.categoryRepository = categoryRepository;
         this.customerRepository = customerRepository;
+        this.vendorRepository = vendorRepository;
     }
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         categoryRepository.saveAll(loadCategory());
-        System.out.println("Category loaded " + categoryRepository.count());
+        System.out.println("Categories loaded " + categoryRepository.count());
 
         customerRepository.saveAll(loadCustomers());
-        System.out.println("Customer loaded " + categoryRepository.count());
+        System.out.println("Customers loaded " + categoryRepository.count());
+
+        vendorRepository.saveAll(loadVendors());
+        System.out.println("Vendors loaded " + vendorRepository.count());
     }
 
     private List<Customer> loadCustomers() {
@@ -73,5 +82,16 @@ public class Bootstrap implements CommandLineRunner{
         nuts.setName("Nuts");
 
         return  Arrays.asList(fruits, dried, fresh, exotic, nuts);
+    }
+
+    private List<Vendor> loadVendors() {
+
+        Vendor westernTastyFruitsLtd = new Vendor();
+        westernTastyFruitsLtd.setName("Western Tasty Fruits Ltd.");
+
+        Vendor homeFruits = new Vendor();
+        homeFruits.setName("Home Fruits");
+
+        return Arrays.asList(westernTastyFruitsLtd, homeFruits);
     }
 }
