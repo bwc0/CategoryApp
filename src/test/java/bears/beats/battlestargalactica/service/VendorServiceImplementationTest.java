@@ -17,6 +17,8 @@ import java.util.Optional;
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class VendorServiceImplementationTest {
@@ -34,7 +36,7 @@ public class VendorServiceImplementationTest {
 
         vendorDTO = new VendorDTO();
         vendorDTO.setName(NAME);
-        vendorDTO.setVendor_url("/api/v1/vendors_url");
+        vendorDTO.setVendor_url(VendorController.BASEURL);
 
         vendorService = new VendorServiceImplementation(VendorMapper.INSTANCE,
                 vendorRepository);
@@ -95,5 +97,13 @@ public class VendorServiceImplementationTest {
 
         assertEquals(savedVendor.getName(), updatedVendor.getName());
         assertEquals(VendorController.BASEURL + "/1", updatedVendor.getVendor_url());
+    }
+
+    @Test
+    public void deleteVendorTest() {
+        Long id = 1L;
+        vendorService.deleteVendorById(id);
+
+        verify(vendorRepository, times(1)).deleteById(anyLong());
     }
 }

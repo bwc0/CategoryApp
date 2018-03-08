@@ -3,4 +3,4 @@
 [![codecov](https://codecov.io/gh/bwc0/CategoryApp/branch/master/graph/badge.svg)](https://codecov.io/gh/bwc0/CategoryApp)
 
 
-# CategoryApp
+# Category Api

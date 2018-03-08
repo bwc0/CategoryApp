@@ -40,7 +40,7 @@ public class CustomerServiceIT {
     CustomerService customerService;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         System.out.println("Loading customer data");
         System.out.println(customerRepository.findAll().size());
 

@@ -21,10 +21,10 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -114,5 +114,29 @@ public class VendorControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name", equalTo(NAME)))
                 .andExpect(jsonPath("$.vendor_url", equalTo(VendorController.BASEURL + "/1")));
+    }
+
+    @Test
+    public void patchUpdateVendorTest() throws Exception {
+        returnDTO.setName("New Vendor");
+
+        when(vendorService.patchUpdateVendor(anyLong(), any(VendorDTO.class))).thenReturn(returnDTO);
+
+        mockMvc.perform(patch(VendorController.BASEURL + "/1")
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(asJsonString(vendorDTO)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name", equalTo("New Vendor")))
+                .andExpect(jsonPath("$.vendor_url", equalTo(VendorController.BASEURL + "/1")));
+    }
+
+    @Test
+    public void deleteVendorById() throws Exception {
+
+        mockMvc.perform(delete(VendorController.BASEURL + "/1")
+        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        verify(vendorService, times(1)).deleteVendorById(anyLong());
     }
 }

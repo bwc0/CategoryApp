@@ -27,7 +27,7 @@ public class VendorServiceImplementation implements VendorService {
                 .stream()
                 .map(vendor -> {
                     VendorDTO vendorDTO = vendorMapper.vendorToVendorDTO(vendor);
-                    vendorDTO.setVendor_url(VendorController.BASEURL + vendor.getId());
+                    vendorDTO.setVendor_url(VendorController.BASEURL + "/" + vendor.getId());
                     return vendorDTO;
                 })
                 .collect(Collectors.toList());
@@ -55,7 +55,27 @@ public class VendorServiceImplementation implements VendorService {
 
     @Override
     public VendorDTO patchUpdateVendor(Long id, VendorDTO vendorDTO) {
-        return null;
+        return vendorRepository.findById(id)
+                .map(vendor -> {
+
+                    if(vendorDTO.getName() != null) {
+                        vendor.setName(vendorDTO.getName());
+                    }
+
+                    VendorDTO returnDTO = vendorMapper
+                            .vendorToVendorDTO(vendorRepository.save(vendor));
+
+
+                    returnDTO.setVendor_url(getVendorUrl(id));
+
+                    return returnDTO;
+
+                }).orElseThrow(ResourceNotFoundException::new);
+    }
+
+    @Override
+    public void deleteVendorById(Long id) {
+        vendorRepository.deleteById(id);
     }
 
     private VendorDTO saveAndReturnDTO(Vendor vendor) {
