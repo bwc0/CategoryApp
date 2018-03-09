@@ -1,4 +1,4 @@
-package bears.beats.battlestargalactica.bootstrapClasses;
+package bears.beats.battlestargalactica.bootstrap;
 
 import bears.beats.battlestargalactica.domain.Category;
 import bears.beats.battlestargalactica.domain.Customer;
@@ -9,7 +9,6 @@ import bears.beats.battlestargalactica.repository.VendorRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 

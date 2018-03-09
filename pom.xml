@@ -19,8 +19,8 @@
 	</parent>
 
 	<modules>
-		<module>rest-customer-module</module>
 		<module>rest-app</module>
+		<module>rest-customer-module</module>
 	</modules>
 
 	<properties>

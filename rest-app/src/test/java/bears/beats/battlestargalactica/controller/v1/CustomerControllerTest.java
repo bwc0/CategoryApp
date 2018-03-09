@@ -1,7 +1,7 @@
 package bears.beats.battlestargalactica.controller.v1;
 
-import bears.beats.battlestargalactica.api.v1.dto.CustomerDTO;
 import bears.beats.battlestargalactica.controller.RestResponseEntityExceptionHandler;
+import bears.beats.battlestargalactica.model.CustomerDTO;
 import bears.beats.battlestargalactica.service.CustomerService;
 import bears.beats.battlestargalactica.service.ResourceNotFoundException;
 import org.junit.Before;
@@ -32,8 +32,8 @@ public class CustomerControllerTest {
 
     private static final String FIRSTNAME = "Dexter";
     private static final String LASTNAME = "Morgan";
-    private CustomerDTO customerDTO;
-    private CustomerDTO returnDTO;
+    CustomerDTO customerDTO;
+    CustomerDTO returnDTO;
 
     private MockMvc mockMvc;
 
@@ -94,7 +94,7 @@ public class CustomerControllerTest {
     @Test
     public void createNewCustomerTest() throws Exception {
 
-        when(customerService.createNewCustomer(customerDTO)).thenReturn(returnDTO);
+        when(customerService.createNewCustomer(any(CustomerDTO.class))).thenReturn(returnDTO);
 
         mockMvc.perform(post(CustomerController.BASEURL)
             .accept(MediaType.APPLICATION_JSON)
@@ -102,7 +102,7 @@ public class CustomerControllerTest {
             .content(asJsonString(customerDTO)))
               .andExpect(status().isCreated())
               .andExpect(jsonPath("$.firstName", equalTo(FIRSTNAME)))
-              .andExpect(jsonPath("$.customer_url", equalTo(CustomerController.BASEURL + "/1")));
+              .andExpect(jsonPath("$.customerUrl", equalTo(CustomerController.BASEURL + "/1")));
     }
 
     @Test
@@ -117,7 +117,7 @@ public class CustomerControllerTest {
             .andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstName", equalTo(FIRSTNAME)))
                 .andExpect(jsonPath("$.lastName", equalTo(LASTNAME)))
-                .andExpect(jsonPath("$.customer_url", equalTo(CustomerController.BASEURL + "/1")));
+                .andExpect(jsonPath("$.customerUrl", equalTo(CustomerController.BASEURL + "/1")));
     }
 
     @Test
@@ -133,7 +133,7 @@ public class CustomerControllerTest {
             .andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstName", equalTo(FIRSTNAME)))
                 .andExpect(jsonPath("$.lastName", equalTo("Rogan")))
-                .andExpect(jsonPath("$.customer_url", equalTo(CustomerController.BASEURL + "/1")));
+                .andExpect(jsonPath("$.customerUrl", equalTo(CustomerController.BASEURL + "/1")));
     }
 
     @Test

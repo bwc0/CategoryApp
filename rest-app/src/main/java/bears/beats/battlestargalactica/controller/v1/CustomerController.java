@@ -1,10 +1,9 @@
 package bears.beats.battlestargalactica.controller.v1;
 
-import bears.beats.battlestargalactica.api.v1.dto.CustomerDTO;
-import bears.beats.battlestargalactica.api.v1.dto.CustomerListDTO;
+import bears.beats.battlestargalactica.model.CustomerDTO;
+import bears.beats.battlestargalactica.model.CustomerListDTO;
 import bears.beats.battlestargalactica.service.CustomerService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,7 +20,9 @@ public class CustomerController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public CustomerListDTO getAllCustomers() {
-        return new CustomerListDTO(customerService.getAllCustomers());
+        CustomerListDTO customerListDTO = new CustomerListDTO();
+        customerListDTO.getCustomers().addAll(customerService.getAllCustomers());
+        return customerListDTO;
     }
 
     @GetMapping("/{id}")

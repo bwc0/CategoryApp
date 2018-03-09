@@ -1,9 +1,9 @@
 package bears.beats.battlestargalactica.service;
 
-import bears.beats.battlestargalactica.api.v1.dto.CustomerDTO;
 import bears.beats.battlestargalactica.api.v1.mapper.CustomerMapper;
-import bears.beats.battlestargalactica.bootstrapClasses.Bootstrap;
+import bears.beats.battlestargalactica.bootstrap.Bootstrap;
 import bears.beats.battlestargalactica.domain.Customer;
+import bears.beats.battlestargalactica.model.CustomerDTO;
 import bears.beats.battlestargalactica.repository.CategoryRepository;
 import bears.beats.battlestargalactica.repository.CustomerRepository;
 import bears.beats.battlestargalactica.repository.VendorRepository;

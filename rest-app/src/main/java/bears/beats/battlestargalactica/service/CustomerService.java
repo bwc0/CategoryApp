@@ -1,7 +1,8 @@
 package bears.beats.battlestargalactica.service;
 
-import bears.beats.battlestargalactica.api.v1.dto.CustomerDTO;
-import bears.beats.battlestargalactica.api.v1.dto.CustomerListDTO;
+
+
+import bears.beats.battlestargalactica.model.CustomerDTO;
 
 import java.util.List;
 
